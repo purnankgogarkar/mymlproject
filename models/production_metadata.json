@@ -1,7 +1,0 @@
-{
-  "model_name": "Tuned GradientBoosting",
-  "baseline_f1": 0.6175357597659056,
-  "tuned_f1": 0.7610096653756887,
-  "selected_f1": 0.7610096653756887,
-  "timestamp": "2026-04-30T17:59:03.570422"
-}
