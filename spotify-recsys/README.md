@@ -2,7 +2,7 @@
 
 **Production-ready machine learning system for personalized music track recommendations using content-based and collaborative filtering with hybrid ensemble approach.**
 
-[🚀 **LIVE DEMO**](https://spotify-recsys-demo.streamlit.app) | [📊 MLflow Tracking](http://localhost:5000) | [🐳 Docker Hub](#docker)
+[� **GitHub Repository**](https://github.com/purnankgogarkar/mymlproject) | [📊 MLflow Tracking](http://localhost:5000) | [📧 Contact: purnank18@gmail.com](mailto:purnank18@gmail.com)
 
 ---
 
@@ -159,8 +159,8 @@ Binary classification: **Will user like this track?** (0 = No, 1 = Yes)
 
 ### 1. Clone Repository
 ```bash
-git clone https://github.com/YOUR_ORG/spotify-recsys.git
-cd spotify-recsys
+git clone https://github.com/purnankgogarkar/mymlproject.git
+cd mymlproject/spotify-recsys
 ```
 
 ### 2. Create Virtual Environment
@@ -478,9 +478,9 @@ MIT License — See LICENSE file for details
 
 **Data Scientist & ML Engineer**
 
-- 📧 Email: [your-email@example.com](mailto:your-email@example.com)
-- 🔗 LinkedIn: [Your LinkedIn Profile](https://linkedin.com/in/yourprofile)
-- 🐙 GitHub: [Your GitHub Profile](https://github.com/yourprofile)
+- 📧 Email: [purnank18@gmail.com](mailto:purnank18@gmail.com)
+- 🐙 GitHub: [purnankgogarkar](https://github.com/purnankgogarkar)
+- 📦 Project: [Spotify Recommendation Engine](https://github.com/purnankgogarkar/mymlproject)
 
 ---
 
@@ -496,8 +496,8 @@ MIT License — See LICENSE file for details
 ## 📞 Support
 
 For issues, questions, or feedback:
-1. Check [GitHub Issues](https://github.com/YOUR_ORG/spotify-recsys/issues)
-2. Open a new issue with details
+1. Check [GitHub Issues](https://github.com/purnankgogarkar/mymlproject/issues)
+2. Email: purnank18@gmail.com for direct contact
 3. Reference relevant code sections
 
 ---

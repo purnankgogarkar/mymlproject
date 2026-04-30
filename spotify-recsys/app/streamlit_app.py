@@ -758,7 +758,7 @@ def page_how_i_built():
     
     with col1:
         st.markdown("""
-        [📁 GitHub Repository](https://github.com/)
+        [📁 GitHub Repository](https://github.com/purnankgogarkar/mymlproject)
         
         Full source code, data, and notebooks
         """)
@@ -772,7 +772,7 @@ def page_how_i_built():
     
     with col3:
         st.markdown("""
-        [📖 Project Documentation](https://github.com/)
+        [📖 Project Documentation](https://github.com/purnankgogarkar/mymlproject)
         
         README, architecture, API docs
         """)
@@ -818,11 +818,9 @@ def main():
         
         col1, col2 = st.columns(2)
         with col1:
-            if st.button("📘 GitHub", key="github_btn"):
-                st.info("GitHub link will appear here")
+            st.markdown("[📘 GitHub](https://github.com/purnankgogarkar/mymlproject)")
         with col2:
-            if st.button("📧 Contact", key="contact_btn"):
-                st.info("contact@example.com")
+            st.markdown("[📧 Email: purnank18@gmail.com](mailto:purnank18@gmail.com)")
     
     # Page Routing
     if page == "📌 Project Overview":
@@ -838,7 +836,8 @@ def main():
     st.markdown("---")
     st.markdown("""
     <div style="text-align: center; color: #888; font-size: 12px;">
-    <p>🎵 Spotify Recommendation Engine | Portfolio Showcase | Built with Streamlit</p>
+    <p>🎵 Spotify Recommendation Engine | Portfolio by Purnak | Built with Streamlit</p>
+    <p>📧 Contact: purnank18@gmail.com | 🔗 GitHub: purnankgogarkar</p>
     <p>© 2026 | Data: Spotify API | Models: scikit-learn | Tracking: MLflow</p>
     </div>
     """, unsafe_allow_html=True)
