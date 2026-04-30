@@ -1,0 +1,14 @@
+{
+  "model_name": "collaborative_filtering",
+  "model_type": "collaborative_filtering",
+  "trained_at": "2026-04-30T00:24:53.896682",
+  "file_path": "models\\collaborative_filtering_20260430_002454.joblib",
+  "file_size_mb": 0.045083045959472656,
+  "n_users": 50,
+  "n_items": 100,
+  "n_neighbors": 5,
+  "interaction_matrix_shape": [
+    50,
+    100
+  ]
+}

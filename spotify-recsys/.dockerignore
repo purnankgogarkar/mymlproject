@@ -1,0 +1,44 @@
+# Git
+.git
+.gitignore
+
+# Python
+__pycache__
+*.pyc
+*.pyo
+*.egg-info
+dist/
+build/
+.pytest_cache
+.coverage
+htmlcov/
+
+# Virtual environments
+venv/
+env/
+.venv
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Data (will be mounted as volume)
+# data/raw/* - keep structure but ignore raw data
+# models/* - will be mounted as volume
+
+# Logs
+*.log
+logs/
+
+# Docker
+docker-compose.override.yml
+.dockerignore
+
+# Development
+.env.local
+.env.*.local
+*.ipynb_checkpoints
