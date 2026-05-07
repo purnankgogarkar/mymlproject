@@ -1,0 +1,47 @@
+# Example Configuration with MLflow Tracking and Optuna Tuning
+
+data:
+  path: data/titanic.csv
+  target: Survived
+  test_size: 0.2
+  random_state: 42
+
+preprocessing:
+  missing_value_strategy: auto
+  encoding_method: auto
+  scaling_method: robust
+  outlier_method: iqr
+
+feature_engineering:
+  auto_generate: true
+  transformations: [log, sqrt]
+  interactions: false
+  polynomials:
+    enabled: false
+
+model:
+  type: classification
+  name: XGBoost
+  hyperparams:
+    n_estimators: 100
+    learning_rate: 0.1
+    max_depth: 6
+
+evaluation:
+  cv_folds: 5
+  metrics: [accuracy, f1, auc_roc]
+
+# Enable MLflow experiment tracking
+mlflow:
+  enabled: true
+  experiment_name: titanic_survival_prediction
+  tracking_uri: http://localhost:5000
+
+# Enable Optuna hyperparameter tuning
+optuna:
+  enabled: true
+  n_trials: 100
+  search_space:
+    n_estimators: [50, 300]
+    max_depth: [3, 10]
+    learning_rate: [0.001, 0.1]

@@ -1,0 +1,44 @@
+# Example Configuration for Classification Problem
+# Iris Dataset
+
+data:
+  path: data/iris.csv
+  target: species
+  test_size: 0.2
+  random_state: 42
+
+preprocessing:
+  missing_value_strategy: auto
+  encoding_method: auto
+  scaling_method: standard
+  outlier_method: iqr
+
+feature_engineering:
+  auto_generate: true
+  transformations: [log, sqrt, square]
+  interactions: true
+  polynomials:
+    enabled: false
+    degree: 2
+
+model:
+  type: classification
+  name: RandomForest
+  hyperparams:
+    n_estimators: 100
+    max_depth: 10
+    min_samples_split: 5
+    min_samples_leaf: 2
+
+evaluation:
+  cv_folds: 5
+  metrics: [accuracy, precision, recall, f1, auc_roc]
+
+mlflow:
+  enabled: false
+  experiment_name: iris_classification
+  tracking_uri: ./mlruns
+
+optuna:
+  enabled: false
+  n_trials: 50

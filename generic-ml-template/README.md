@@ -63,15 +63,15 @@ generic-ml-template/
    ├── features/           # Feature engineering (Phase 2) ✅
    │   └── engineer.py     # Auto generate: math transforms, interactions, polynomial, ratios, custom
 │   │
-│   ├── models/             # ML training (Phase 3)
-│   │   ├── registry.py     # Model registry with metadata
-│   │   ├── trainer.py      # Generic trainer for any model
-│   │   ├── evaluator.py    # Compute metrics
-│   │   └── tuner.py        # Optuna hyperparameter tuning
+│   ├── models/             # ML training (Phase 3) ✅
+│   │   ├── trainer.py      # Generic trainer: 9 classification + 11 regression models, CV, feature importance
+│   │   └── evaluator.py    # Compute metrics: classification (ACC, F1, AUC-ROC, Confusion Matrix) + regression (RMSE, MAE, R², MAPE)
 │   │
-│   ├── config/             # Configuration (Phase 4)
-│   │   ├── config_loader.py
-│   │   └── defaults.py
+│   ├── config/             # Configuration (Phase 4) ✅
+│   │   ├── config_loader.py    # YAML config loading, validation, env var substitution
+│   │   ├── model_defaults.py   # Pre-tuned defaults for 20 models + Optuna tuning spaces
+│   │   ├── mlflow_tracker.py   # Optional MLflow experiment tracking
+│   │   └── optuna_tuner.py     # Optional Optuna hyperparameter optimization
 │   │
 │   ├── export/             # Model export (Phase 6)
 │   │   └── model_exporter.py
@@ -91,13 +91,19 @@ generic-ml-template/
 │       ├── session_state.py
 │       └── visualizations.py
 │
-├── tests/                  # Test suite (111+ tests)
+├── tests/                  # Test suite (222+ tests)
    ├── conftest.py         # Pytest fixtures
    ├── test_loader.py      # DataLoader tests (16 tests) ✅
    ├── test_explorer.py    # DataExplorer tests (12 tests) ✅
    ├── test_validator.py   # DataValidator tests (14 tests) ✅
    ├── test_preprocessor.py # Preprocessor tests (32 tests) ✅
-   └── test_engineer.py    # FeatureEngineer tests (37 tests) ✅
+   ├── test_engineer.py    # FeatureEngineer tests (37 tests) ✅
+   ├── test_trainer.py     # GenericTrainer tests (20+ tests) ✅
+   ├── test_evaluator.py   # Evaluator tests (20+ tests) ✅
+   ├── test_config_loader.py    # ConfigLoader tests (16 tests) ✅
+   ├── test_model_defaults.py   # ModelDefaults tests (12 tests) ✅
+   ├── test_mlflow_tracker.py   # MLflowTracker tests (12 tests) ✅
+   └── test_optuna_tuner.py     # OptunaTuner tests (12 tests) ✅
 │
 ├── configs/                # Example YAML configs
 │   ├── default_classification.yaml
@@ -191,11 +197,54 @@ df_engineered = (engineer
     .get_engineered_data())
 ```
 
-### 6. (Upcoming Phases)
-- **Phase 3**: Model Training (in progress)
-- **Phase 4**: Configuration System
-- **Phase 5**: Streamlit UI
-- **Phase 6**: Production Export (Flask API)
+### 6. Train and Evaluate Models
+
+```python
+from src.models.trainer import GenericTrainer
+from src.models.evaluator import Evaluator
+
+# Create and train trainer with auto problem-type detection
+trainer = GenericTrainer(X, y, cv_folds=5)
+trainer.train('RandomForest')
+
+# Get predictions
+y_pred = trainer.predict(X)
+y_pred_proba = trainer.predict_proba(X)
+
+# Evaluate performance
+evaluator = Evaluator(y, y_pred, y_pred_proba, problem_type='classification')
+evaluator.evaluate().print_report()
+```
+
+### 7. Configure ML Pipeline (Phase 4)
+
+```python
+from src.config.config_loader import ConfigLoader
+from src.config.mlflow_tracker import MLflowTracker
+from src.config.optuna_tuner import OptunaTuner
+
+# Load configuration from YAML
+config = ConfigLoader('configs/iris_classification.yaml')
+config.load().validate()
+
+data_cfg = config.get_data_config()
+model_cfg = config.get_model_config()
+
+# Optional: Track experiments with MLflow
+tracker = MLflowTracker('my_experiment', tracking_uri='./mlruns')
+tracker.start_run().log_params(model_cfg).log_metrics({'accuracy': 0.95}).end_run()
+
+# Optional: Optimize hyperparameters with Optuna
+tuner = OptunaTuner(X, y, problem_type='classification')
+tuner.tune(n_trials=100, model_name='RandomForest')
+best_params = tuner.get_best_params()
+```
+
+### 8. (Upcoming Phases)
+- **Phase 5**: Streamlit UI (interactive dashboard)
+- **Phase 6**: Production Export (Flask API + model.pkl)
+- **Phase 7**: Comprehensive Testing + Documentation
+- **Phase 8**: GitHub + Deployment
 
 ---
 
@@ -205,8 +254,8 @@ df_engineered = (engineer
 |-------|--------|----------|---|
 | **1. Data Pipeline** | ✅ DONE | 2d | 100% |
 | **2. Preprocessing + Features** | ✅ DONE | 2d | 100% |
-| 3. Model Training | ⏳ IN PROGRESS | 2d | 0% |
-| 4. Config System | ⏳ TODO | 2d | 0% |
+| **3. Model Training** | ✅ DONE | 2d | 100% |
+| **4. Config System** | ✅ DONE | 2d | 100% |
 | 5. Streamlit UI | ⏳ TODO | 3d | 0% |
 | 6. Production Export | ⏳ TODO | 2d | 0% |
 | 7. Testing + Docs | ⏳ TODO | 2d | 0% |
@@ -232,9 +281,60 @@ All 69 tests passing (32 preprocessor + 37 engineer):
 - Custom feature support with error handling
 - Full method chaining interface
 
+All 69 tests pass:
+```bash
+pytest tests/test_preprocessor.py tests/test_engineer.py -v
+```
+
+**Phase 3 — Model Training & Evaluation** ✅
+All 59 tests passing (20 trainer + 20 evaluator):
+- GenericTrainer: 9 classification models (LogisticRegression, RandomForest, GradientBoosting, XGBoost, LightGBM, SVM, KNeighbors, DecisionTree, NeuralNetwork)
+- GenericTrainer: 11 regression models (LinearRegression, Ridge, Lasso, RandomForest, GradientBoosting, XGBoost, LightGBM, SVM, KNeighbors, DecisionTree, NeuralNetwork)
+- Auto problem-type detection (numeric ≤20 unique, ≤50% uniqueness ratio → classification; else regression)
+- Cross-validation with configurable folds (default 5)
+- Feature importance extraction for tree-based models
+- Probabilistic predictions (predict_proba) for classification
+- Evaluator: Classification metrics (Accuracy, Precision, Recall, F1, AUC-ROC, Confusion Matrix)
+- Evaluator: Regression metrics (RMSE, MAE, R², MAPE, Residual Analysis)
+- Model comparison framework for comparing two trained models
+
 All tests pass:
 ```bash
-pytest tests/ -v
+pytest tests/test_trainer.py tests/test_evaluator.py -v
+```
+
+**Phase 4 — Configuration System** ✅
+All 84 tests passing (16 config_loader + 12 model_defaults + 12 mlflow_tracker + 12 optuna_tuner):
+- **ConfigLoader**: YAML loading with validation, environment variable substitution, dot-notation access, serialization
+  - Supports all preprocessing strategies (mean, median, mode, forward_fill, drop, auto)
+  - Supports all encoding methods (one-hot, label, auto)
+  - Supports all scaling methods (standard, minmax, robust)
+  - Environment variable substitution: `${VAR_NAME}` and `$VAR_NAME` syntax
+  - Validates test_size ∈ (0,1), cv_folds ≥2, model names, numeric ranges
+  
+- **ModelDefaults**: Pre-tuned hyperparameters for 20 models + Optuna search spaces
+  - 9 classification defaults + 11 regression defaults
+  - Optuna-compatible tuning spaces (int, uniform, loguniform, categorical)
+  - Functions: get_model_defaults(), get_tuning_space(), list_models(), update_defaults()
+  
+- **MLflowTracker**: Optional experiment tracking with MLflow
+  - Experiment creation and run management
+  - Parameter and metric logging with optional steps
+  - Config and model artifact storage
+  - Windows path normalization for file:// URI compatibility
+  - Fluent interface for method chaining
+  
+- **OptunaTuner**: Optional hyperparameter optimization with Optuna
+  - Support for TPE and Random samplers
+  - Pruning with optional early stopping
+  - Cross-validation integration (default 5 folds)
+  - Trial history and visualization
+  - Precondition validation for method calls
+  - Fluent interface for method chaining
+
+All 84 tests pass:
+```bash
+pytest tests/test_config_loader.py tests/test_model_defaults.py tests/test_mlflow_tracker.py tests/test_optuna_tuner.py -v
 ```
 
 ---
@@ -261,7 +361,13 @@ pytest tests/test_loader.py::TestDataLoaderLoad::test_load_csv -v
 - `test_validator.py` — 14 tests for DataValidator ✅
 - `test_preprocessor.py` — 32 tests for Preprocessor ✅
 - `test_engineer.py` — 37 tests for FeatureEngineer ✅
-**Total: 111+ tests passing**
+- `test_trainer.py` — 20+ tests for GenericTrainer ✅
+- `test_evaluator.py` — 20+ tests for Evaluator ✅
+- `test_config_loader.py` — 16 tests for ConfigLoader ✅
+- `test_model_defaults.py` — 12 tests for ModelDefaults ✅
+- `test_mlflow_tracker.py` — 12 tests for MLflowTracker ✅
+- `test_optuna_tuner.py` — 12 tests for OptunaTuner ✅
+**Total: 222+ tests passing**
 
 ---
 
@@ -292,6 +398,70 @@ if is_valid:
     print("\nRecommended models:")
     for model in models:
         print(f"  - {model['model']}: {model['reason']}")
+```
+
+### Train and Evaluate Models (Phase 3)
+
+```python
+from src.data.preprocessor import Preprocessor
+from src.features.engineer import FeatureEngineer
+from src.models.trainer import GenericTrainer
+from src.models.evaluator import Evaluator
+
+# 1. Preprocess and engineer features
+preprocessor = Preprocessor(df)
+df_clean = (preprocessor
+    .handle_missing_values(strategy='mean')
+    .encode_categoricals(method='auto')
+    .scale_features(method='standard')
+    .get_processed_data())
+
+engineer = FeatureEngineer(df_clean)
+df_engineered = (engineer
+    .auto_generate_features(transformations=['log', 'sqrt'])
+    .interaction_features(max_features=5)
+    .get_engineered_data())
+
+# 2. Split features and target
+X = df_engineered.drop('Survived', axis=1)
+y = df_engineered['Survived']
+
+# 3. Train multiple models with cross-validation
+trainer = GenericTrainer(X, y, cv_folds=5)
+
+# Train RandomForest
+trainer.train('RandomForest', cv_folds=5)
+print(f"CV Scores: {trainer.get_cv_scores()}")
+
+# 4. Make predictions
+y_pred = trainer.predict(X)
+y_pred_proba = trainer.predict_proba(X)
+
+# 5. Evaluate model
+evaluator = Evaluator(y, y_pred, y_pred_proba, problem_type='classification')
+evaluator.evaluate()
+evaluator.print_report()
+
+# 6. Get metrics
+metrics = evaluator.get_classification_metrics()
+print(f"Accuracy: {metrics['accuracy']:.3f}")
+print(f"F1 Score: {metrics['f1']:.3f}")
+print(f"AUC-ROC: {metrics['auc_roc']:.3f}")
+
+# 7. Extract feature importance
+importance = trainer.get_feature_importance()
+print("\nTop Features:")
+for feat, imp in importance[:5]:
+    print(f"  {feat}: {imp:.4f}")
+
+# 8. Compare models
+trainer.train('GradientBoosting')
+y_pred_gb = trainer.predict(X)
+evaluator_gb = Evaluator(y, y_pred_gb, problem_type='classification').evaluate()
+
+comparison = evaluator.compare_with(evaluator_gb)
+print("\nModel Comparison:")
+print(comparison)
 ```
 
 ### Load Different File Formats
