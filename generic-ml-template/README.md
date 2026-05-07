@@ -79,19 +79,21 @@ generic-ml-template/
 │   └── api/                # Flask API (Phase 6)
 │       └── flask_app.py
 │
-├── app/                    # Streamlit UI (Phase 5)
-│   ├── streamlit_app.py
+├── app/                    # Streamlit UI (Phase 5) ⏳
+│   ├── streamlit_app.py    # Main app entry point, home page, navigation ✅
 │   ├── pages/
-│   │   ├── 01_upload_data.py
-│   │   ├── 02_explore_data.py
-│   │   ├── 03_configure_model.py
-│   │   ├── 04_train.py
-│   │   └── 05_results.py
+│   │   ├── 01_upload_data.py    # CSV/Excel upload + preview + profiling ✅
+│   │   ├── 02_explore_data.py   # Data exploration with 5 tabs ✅
+│   │   ├── 03_configure_model.py # Model configuration builder (Day 3)
+│   │   ├── 04_train_model.py    # Training monitor with progress (Day 3)
+│   │   ├── 05_results.py        # Results visualization and export (Day 3)
+│   │   └── 06_results_detail.py # Detailed results (Day 3)
 │   └── utils/
-│       ├── session_state.py
-│       └── visualizations.py
+│       ├── session_state.py     # AppState dataclass (instance attributes) ✅
+│       ├── visualizations.py    # 10 Plotly chart utilities ✅
+│       └── data_widgets.py      # 9 Streamlit components ✅
 │
-├── tests/                  # Test suite (222+ tests)
+├── tests/                  # Test suite (345+ tests)
    ├── conftest.py         # Pytest fixtures
    ├── test_loader.py      # DataLoader tests (16 tests) ✅
    ├── test_explorer.py    # DataExplorer tests (12 tests) ✅
@@ -103,7 +105,12 @@ generic-ml-template/
    ├── test_config_loader.py    # ConfigLoader tests (16 tests) ✅
    ├── test_model_defaults.py   # ModelDefaults tests (12 tests) ✅
    ├── test_mlflow_tracker.py   # MLflowTracker tests (12 tests) ✅
-   └── test_optuna_tuner.py     # OptunaTuner tests (12 tests) ✅
+   ├── test_optuna_tuner.py     # OptunaTuner tests (12 tests) ✅
+   ├── test_session_state.py    # Phase 5 Day 1: Session state tests (12 tests) ✅
+   ├── test_visualizations.py   # Phase 5 Day 2: Plotly chart tests (25 tests) ✅
+   ├── test_data_widgets.py     # Phase 5 Day 2: Streamlit widget tests (20 tests) ✅
+   ├── test_upload_data_page.py # Phase 5 Day 2: Upload page tests (23 tests) ✅
+   └── test_explore_data_page.py # Phase 5 Day 2: Explore page tests (23 tests) ✅
 │
 ├── configs/                # Example YAML configs
 │   ├── default_classification.yaml
@@ -250,16 +257,16 @@ best_params = tuner.get_best_params()
 
 ## 📊 Phase Progress
 
-| Phase | Status | Duration | Completeness |
-|-------|--------|----------|---|
-| **1. Data Pipeline** | ✅ DONE | 2d | 100% |
-| **2. Preprocessing + Features** | ✅ DONE | 2d | 100% |
-| **3. Model Training** | ✅ DONE | 2d | 100% |
-| **4. Config System** | ✅ DONE | 2d | 100% |
-| 5. Streamlit UI | ⏳ TODO | 3d | 0% |
-| 6. Production Export | ⏳ TODO | 2d | 0% |
-| 7. Testing + Docs | ⏳ TODO | 2d | 0% |
-| 8. GitHub + Deploy | ⏳ TODO | 2d | 0% |
+| Phase | Status | Duration | Completeness | Tests |
+|-------|--------|----------|---|---|
+| **1. Data Pipeline** | ✅ DONE | 2d | 100% | 42 ✅ |
+| **2. Preprocessing + Features** | ✅ DONE | 2d | 100% | 69 ✅ |
+| **3. Model Training** | ✅ DONE | 2d | 100% | 59 ✅ |
+| **4. Config System** | ✅ DONE | 2d | 100% | 84 ✅ |
+| **5. Streamlit UI** | ⏳ IN PROGRESS | 3d | 67% | 103 ✅ |
+| 6. Production Export | ⏳ TODO | 2d | 0% | - |
+| 7. Testing + Docs | ⏳ TODO | 2d | 0% | - |
+| 8. GitHub + Deploy | ⏳ TODO | 2d | 0% | - |
 
 ---
 
@@ -337,6 +344,35 @@ All 84 tests pass:
 pytest tests/test_config_loader.py tests/test_model_defaults.py tests/test_mlflow_tracker.py tests/test_optuna_tuner.py -v
 ```
 
+**Phase 5 — Streamlit Interactive Dashboard** ⏳ IN PROGRESS
+Day 1 & 2 complete: 103 tests passing (12 session_state + 25 visualizations + 20 data_widgets + 23 upload_page + 23 explore_page):
+
+**Day 1: Core Infrastructure** ✅
+- **streamlit_app.py**: Main app with home page, sidebar navigation (6 pages), status indicators
+- **session_state.py**: AppState dataclass for centralized state management (no Streamlit-specific code)
+- **pages**: All 6 page files created with placeholders
+- **config.toml**: Streamlit theme configuration (Microsoft Blue #0078D4)
+- 12 tests: Session state initialization, resets, workflows, data flow
+
+**Day 2: Data Handling** ✅
+- **visualizations.py**: 10 Plotly chart utilities (distribution, categorical, correlation, missing, importance, confusion matrix, ROC, box, scatter)
+- **data_widgets.py**: 9 Streamlit components (file upload, preview, profile, column info, target selection, missing values, statistics)
+- **02_upload_data.py**: CSV/Excel upload with preview, profiling, column info, missing value detection, target selection
+- **03_explore_data.py**: 5-tab exploration (Distributions, Correlations, Missing Data, Statistics, Recommendations)
+- 91 tests total:
+  - 25 visualization tests (distribution, categorical, heatmap, missing, importance, confusion, ROC, box, scatter)
+  - 20 widget tests (upload, preview, profile, columns, target, missing, statistics)
+  - 23 upload page tests (basics, file handling, validation, preview, metrics, workflow, edge cases)
+  - 23 explore page tests (basics, distributions, correlations, missing data, statistics, recommendations, workflow, edge cases)
+
+All tests pass:
+```bash
+pytest tests/test_visualizations.py tests/test_data_widgets.py tests/test_upload_data_page.py tests/test_explore_data_page.py -v
+# 91 passed in 3.11s
+```
+
+**Day 3: Model Training** ⏳ IN PROGRESS
+
 ---
 
 ## 🧪 Running Tests
@@ -367,7 +403,12 @@ pytest tests/test_loader.py::TestDataLoaderLoad::test_load_csv -v
 - `test_model_defaults.py` — 12 tests for ModelDefaults ✅
 - `test_mlflow_tracker.py` — 12 tests for MLflowTracker ✅
 - `test_optuna_tuner.py` — 12 tests for OptunaTuner ✅
-**Total: 222+ tests passing**
+- `test_session_state.py` — 12 tests for Session State (Phase 5 Day 1) ✅
+- `test_visualizations.py` — 25 tests for Plotly Visualizations (Phase 5 Day 2) ✅
+- `test_data_widgets.py` — 20 tests for Data Widgets (Phase 5 Day 2) ✅
+- `test_upload_data_page.py` — 23 tests for Upload Data Page (Phase 5 Day 2) ✅
+- `test_explore_data_page.py` — 23 tests for Explore Data Page (Phase 5 Day 2) ✅
+**Total: 345+ tests passing ✅**
 
 ---
 
