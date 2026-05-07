@@ -10,9 +10,9 @@
 - ✅ **Auto Data Detection** — Automatically detect numeric/categorical/datetime columns
 - ✅ **Data Profiling** — Comprehensive data analysis with 20+ metrics
 - ✅ **Quality Validation** — 5-step validation gate (missing values, duplicates, outliers, etc.)
-- ✅ **Generic Preprocessing** — Handle NaNs, encode categoricals, scale features (configurable)
-- ✅ **Automatic Features** — Generate interaction terms, polynomial features, domain features
-- ✅ **Custom Features** — Optional Python code for domain-specific engineering
+- ✅ **Generic Preprocessing** — Handle NaNs (mean/median/mode/drop), encode categoricals (one-hot/label), scale features (standard/minmax/robust)
+- ✅ **Automatic Features** — Math transforms (log/sqrt/square/cube/exp), interactions, polynomial features (degree 2-3), ratios
+- ✅ **Custom Features** — User-defined functions for domain-specific engineering
 - ✅ **Model Registry** — 8+ models (LogReg, RF, GB, XGBoost, SVM, KNN, etc.)
 - ✅ **Unified Training** — Train any model with 5-fold CV + hyperparameter tuning (Optuna)
 - ✅ **Smart Recommendations** — System recommends models based on data profiling
@@ -60,9 +60,8 @@ generic-ml-template/
 │   │   ├── explorer.py     # Data profiling & recommendations
 │   │   └── validator.py    # Data quality validation
 │   │
-│   ├── features/           # Feature engineering (Phase 2)
-│   │   ├── engineer.py     # Auto-generate features
-│   │   └── custom_engine.py # Optional user code execution
+   ├── features/           # Feature engineering (Phase 2) ✅
+   │   └── engineer.py     # Auto generate: math transforms, interactions, polynomial, ratios, custom
 │   │
 │   ├── models/             # ML training (Phase 3)
 │   │   ├── registry.py     # Model registry with metadata
@@ -92,12 +91,13 @@ generic-ml-template/
 │       ├── session_state.py
 │       └── visualizations.py
 │
-├── tests/                  # Test suite (50+ tests)
-│   ├── conftest.py         # Pytest fixtures
-│   ├── test_loader.py      # DataLoader tests
-│   ├── test_explorer.py    # DataExplorer tests
-│   ├── test_validator.py   # DataValidator tests
-│   └── ... (more test files)
+├── tests/                  # Test suite (111+ tests)
+   ├── conftest.py         # Pytest fixtures
+   ├── test_loader.py      # DataLoader tests (16 tests) ✅
+   ├── test_explorer.py    # DataExplorer tests (12 tests) ✅
+   ├── test_validator.py   # DataValidator tests (14 tests) ✅
+   ├── test_preprocessor.py # Preprocessor tests (32 tests) ✅
+   └── test_engineer.py    # FeatureEngineer tests (37 tests) ✅
 │
 ├── configs/                # Example YAML configs
 │   ├── default_classification.yaml
@@ -168,9 +168,31 @@ is_valid, results = validator.validate()
 validator.print_report()
 ```
 
-### 5. (Upcoming Phases)
-- **Phase 2**: Preprocessing + Feature Engineering
-- **Phase 3**: Model Training
+### 5. Preprocess & Engineer Features
+
+```python
+from src.data.preprocessor import Preprocessor
+from src.features.engineer import FeatureEngineer
+
+# Handle missing values, scale features, encode categoricals
+preprocessor = Preprocessor(df)
+df_clean = (preprocessor
+    .handle_missing_values(strategy='mean')
+    .encode_categoricals(method='auto')
+    .scale_features(method='standard')
+    .get_processed_data())
+
+# Auto-generate features or add custom ones
+engineer = FeatureEngineer(df_clean)
+df_engineered = (engineer
+    .auto_generate_features(transformations=['log', 'sqrt', 'square'])
+    .interaction_features()
+    .polynomial_features(degree=2)
+    .get_engineered_data())
+```
+
+### 6. (Upcoming Phases)
+- **Phase 3**: Model Training (in progress)
 - **Phase 4**: Configuration System
 - **Phase 5**: Streamlit UI
 - **Phase 6**: Production Export (Flask API)
@@ -182,23 +204,33 @@ validator.print_report()
 | Phase | Status | Duration | Completeness |
 |-------|--------|----------|---|
 | **1. Data Pipeline** | ✅ DONE | 2d | 100% |
-| 1.Q Quality Gate | ⏳ IN PROGRESS | 0.5d | 0% |
-| 2. Preprocessing | ⏳ TODO | 2d | 0% |
-| 3. Model Training | ⏳ TODO | 2d | 0% |
+| **2. Preprocessing + Features** | ✅ DONE | 2d | 100% |
+| 3. Model Training | ⏳ IN PROGRESS | 2d | 0% |
 | 4. Config System | ⏳ TODO | 2d | 0% |
 | 5. Streamlit UI | ⏳ TODO | 3d | 0% |
-| 6. Production | ⏳ TODO | 2d | 0% |
-| 7. Tests + Docs | ⏳ TODO | 2d | 0% |
+| 6. Production Export | ⏳ TODO | 2d | 0% |
+| 7. Testing + Docs | ⏳ TODO | 2d | 0% |
 | 8. GitHub + Deploy | ⏳ TODO | 2d | 0% |
 
 ---
 
-## ✅ Phase 1 Verification
+## ✅ Phase 1-2 Verification
 
+**Phase 1 — Data Pipeline** ✅
 Completed implementations tested with:
 - ✅ **Iris dataset** — 150 samples, numeric + categorical
 - ✅ **Titanic dataset** — 891 samples, missing values, mixed types
 - ✅ **Housing dataset** — Numeric regression
+
+**Phase 2 — Preprocessing + Feature Engineering** ✅
+All 69 tests passing (32 preprocessor + 37 engineer):
+- Comprehensive missing value imputation strategies
+- Categorical encoding (one-hot, label, auto-detection)
+- Feature scaling (standard, minmax, robust)
+- Outlier detection (IQR, Z-score)
+- 7 mathematical transformations + interactions + polynomial features
+- Custom feature support with error handling
+- Full method chaining interface
 
 All tests pass:
 ```bash
@@ -224,9 +256,12 @@ pytest tests/test_loader.py::TestDataLoaderLoad::test_load_csv -v
 ```
 
 **Test Coverage:**
-- `test_loader.py` — 15+ tests for DataLoader
-- `test_explorer.py` — 12+ tests for DataExplorer
-- `test_validator.py` — 12+ tests for DataValidator
+- `test_loader.py` — 16 tests for DataLoader ✅
+- `test_explorer.py` — 12 tests for DataExplorer ✅
+- `test_validator.py` — 14 tests for DataValidator ✅
+- `test_preprocessor.py` — 32 tests for Preprocessor ✅
+- `test_engineer.py` — 37 tests for FeatureEngineer ✅
+**Total: 111+ tests passing**
 
 ---
 
