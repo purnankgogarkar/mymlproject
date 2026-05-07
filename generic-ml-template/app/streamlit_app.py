@@ -17,8 +17,8 @@ st.set_page_config(
     layout="wide",
     initial_sidebar_state="expanded",
     menu_items={
-        "Get Help": "https://github.com/yourrepo/generic-ml-template",
-        "Report a bug": "https://github.com/yourrepo/generic-ml-template/issues",
+        "Get Help": "https://github.com/purnankgogarkar/mymlproject",
+        "Report a bug": "https://github.com/purnankgogarkar/mymlproject/issues",
         "About": "Generic ML Template Framework v1.0"
     }
 )
@@ -91,12 +91,11 @@ with st.sidebar:
     
     # Navigation
     st.subheader("🧭 Navigation")
-    st.page_link("app/streamlit_app.py", label="🏠 Home", icon="🏠")
-    st.page_link("app/pages/02_upload_data.py", label="📤 Upload Data", icon="📤")
-    st.page_link("app/pages/03_explore_data.py", label="📊 Explore Data", icon="📊")
-    st.page_link("app/pages/04_configure_model.py", label="⚙️ Configure Model", icon="⚙️")
-    st.page_link("app/pages/05_train_model.py", label="🚀 Train Model", icon="🚀")
-    st.page_link("app/pages/06_results.py", label="📈 Results", icon="📈")
+    st.page_link("pages/01_upload_data.py", label="Upload Data", icon="📤")
+    st.page_link("pages/02_explore_data.py", label="Explore Data", icon="📊")
+    st.page_link("pages/03_configure_model.py", label="Configure Model", icon="⚙️")
+    st.page_link("pages/04_train_model.py", label="Train Model", icon="🚀")
+    st.page_link("pages/05_results.py", label="Results", icon="📈")
     
     st.markdown("---")
     
@@ -124,8 +123,8 @@ with st.sidebar:
         
         A production-ready ML pipeline framework for tabular data.
         
-        [📖 Documentation](https://github.com/yourrepo)
-        [🐛 Report Issues](https://github.com/yourrepo/issues)
+        [📖 Documentation](https://github.com/purnankgogarkar/mymlproject)
+        [🐛 Report Issues](https://github.com/purnankgogarkar/mymlproject/issues)
         """)
 
 # ============================================================================
@@ -332,6 +331,6 @@ col1, col2, col3 = st.columns(3)
 with col1:
     st.markdown("**Version:** 1.0")
 with col2:
-    st.markdown("[📖 Docs](https://github.com/yourrepo)")
+    st.markdown("[📖 Docs](https://github.com/purnankgogarkar/mymlproject)")
 with col3:
-    st.markdown("[🐛 Issues](https://github.com/yourrepo/issues)")
+    st.markdown("[🐛 Issues](https://github.com/purnankgogarkar/mymlproject/issues)")

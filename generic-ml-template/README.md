@@ -357,8 +357,8 @@ pytest tests/test_config_loader.py tests/test_model_defaults.py tests/test_mlflo
 **Data Handling** ✅
 - **visualizations.py**: 10 Plotly chart utilities (distribution, categorical, correlation, missing, importance, confusion matrix, ROC, box, scatter)
 - **data_widgets.py**: 9 Streamlit components (file upload, preview, profile, column info, target selection, missing values, statistics)
-- **02_upload_data.py**: CSV/Excel upload with preview, profiling, column info, missing value detection, target selection
-- **03_explore_data.py**: 5-tab exploration (Distributions, Correlations, Missing Data, Statistics, Recommendations)
+- **01_upload_data.py**: CSV/Excel upload with preview, profiling, column info, missing value detection, target selection
+- **02_explore_data.py**: 5-tab exploration (Distributions, Correlations, Missing Data, Statistics, Recommendations)
 - 91 tests total:
   - 25 visualization tests (distribution, categorical, heatmap, missing, importance, confusion, ROC, box, scatter)
   - 20 widget tests (upload, preview, profile, columns, target, missing, statistics)

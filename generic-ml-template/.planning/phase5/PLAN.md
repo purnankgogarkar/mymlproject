@@ -33,11 +33,11 @@ app/
 ├── streamlit_app.py          # Main entry point
 ├── pages/
 │   ├── 01_home.py            # Homepage with overview
-│   ├── 02_upload_data.py     # Data upload & preview
-│   ├── 03_explore_data.py    # Data profiling dashboard
-│   ├── 04_configure_model.py # Model configuration builder
-│   ├── 05_train_model.py     # Training monitor
-│   └── 06_results.py         # Results visualization
+│   ├── 01_upload_data.py     # Data upload & preview
+│   ├── 02_explore_data.py    # Data profiling dashboard
+│   ├── 03_configure_model.py # Model configuration builder
+│   ├── 04_train_model.py     # Training monitor
+│   └── 05_results.py         # Results visualization
 ├── utils/
 │   ├── session_state.py      # Session state management
 │   ├── visualizations.py     # Plotly charts
@@ -164,7 +164,7 @@ Side-by-side model comparison and visualization
 
 ---
 
-### 3. Upload Data Page (`app/pages/02_upload_data.py`)
+### 3. Upload Data Page (`app/pages/01_upload_data.py`)
 
 **Purpose:** File upload with preview and validation
 
@@ -243,7 +243,7 @@ if uploaded_file:
 
 ---
 
-### 4. Explore Data Page (`app/pages/03_explore_data.py`)
+### 4. Explore Data Page (`app/pages/02_explore_data.py`)
 
 **Purpose:** Interactive data profiling and visualization
 
@@ -328,7 +328,7 @@ with tab5:
 
 ---
 
-### 5. Configure Model Page (`app/pages/04_configure_model.py`)
+### 5. Configure Model Page (`app/pages/03_configure_model.py`)
 
 **Purpose:** Visual config builder for ML pipeline
 
@@ -534,7 +534,7 @@ with st.expander("📂 Load Example Config"):
 
 ---
 
-### 6. Train Model Page (`app/pages/05_train_model.py`)
+### 6. Train Model Page (`app/pages/04_train_model.py`)
 
 **Purpose:** Model training with real-time progress monitoring
 
@@ -660,7 +660,7 @@ if st.button("▶️ Start Training", key="train_button"):
 
 ---
 
-### 7. Results Page (`app/pages/06_results.py`)
+### 7. Results Page (`app/pages/05_results.py`)
 
 **Purpose:** Model results visualization and comparison
 

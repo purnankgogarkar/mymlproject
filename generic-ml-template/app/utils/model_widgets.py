@@ -3,7 +3,7 @@
 import streamlit as st
 import pandas as pd
 from typing import Dict, Any, List, Tuple
-from src.config.model_defaults import ModelDefaults
+from src.config.model_defaults import get_model_defaults, list_models, get_tuning_space
 
 
 def select_model_type() -> str:
@@ -35,8 +35,7 @@ def select_model(problem_type: str) -> str:
     """
     st.subheader("🤖 Select Model")
     
-    defaults = ModelDefaults()
-    models = defaults.list_models()
+    models = list_models(problem_type)
     
     if problem_type == 'classification':
         available_models = [m for m in models if m in [
@@ -71,8 +70,7 @@ def configure_model_hyperparameters(model_name: str, problem_type: str) -> Dict[
     """
     st.subheader("⚙️ Hyperparameters")
     
-    defaults = ModelDefaults()
-    default_params = defaults.get_model_defaults(model_name)
+    default_params = get_model_defaults(problem_type, model_name)
     
     params = {}
     
