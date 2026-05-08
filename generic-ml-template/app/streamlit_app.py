@@ -93,9 +93,10 @@ with st.sidebar:
     st.subheader("🧭 Navigation")
     st.page_link("pages/01_upload_data.py", label="Upload Data", icon="📤")
     st.page_link("pages/02_explore_data.py", label="Explore Data", icon="📊")
-    st.page_link("pages/03_configure_model.py", label="Configure Model", icon="⚙️")
-    st.page_link("pages/04_train_model.py", label="Train Model", icon="🚀")
-    st.page_link("pages/05_results.py", label="Results", icon="📈")
+    st.page_link("pages/03_clean_data.py", label="Clean Data", icon="🧹")
+    st.page_link("pages/04_configure_model.py", label="Configure Model", icon="⚙️")
+    st.page_link("pages/05_train_model.py", label="Train Model", icon="🚀")
+    st.page_link("pages/06_results.py", label="Results", icon="📈")
     
     st.markdown("---")
     

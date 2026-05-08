@@ -35,9 +35,9 @@ User Data (CSV/Excel)
     ↓
 [DataExplorer] → Profile, correlations, recommendations
     ↓
-[User Config] → Select target, features, model type
+[DataCleaner] → Interactive missing values, encoding, scaling, outlier removal
     ↓
-[Preprocessor] → NaN handling, encoding, scaling
+[User Config] → Select target, features, model type
     ↓
 [FeatureEngineer] → Auto + custom feature creation
     ↓
@@ -45,7 +45,7 @@ User Data (CSV/Excel)
     ↓
 [Evaluator] → Compute metrics (ACC, F1, RMSE, AUC, etc.)
     ↓
-[Exporter] → model.pkl + Flask API + config.yaml
+[Exporter] → model.pkl + Flask API + config.yaml + Equations
 ```
 
 ---
@@ -84,10 +84,10 @@ generic-ml-template/
 │   ├── pages/
 │   │   ├── 01_upload_data.py    # CSV/Excel upload + preview + profiling ✅
 │   │   ├── 02_explore_data.py   # Data exploration with 5 tabs ✅
-│   │   ├── 03_configure_model.py # Model configuration builder (Day 3)
-│   │   ├── 04_train_model.py    # Training monitor with progress (Day 3)
-│   │   ├── 05_results.py        # Results visualization and export (Day 3)
-│   │   └── 06_results_detail.py # Detailed results (Day 3)
+│   │   ├── 03_clean_data.py     # Data cleaning & preprocessing (Missing values, encoding, scaling, outliers) ✅
+│   │   ├── 04_configure_model.py # Model configuration builder ✅
+│   │   ├── 05_train_model.py    # Training monitor with progress ✅
+│   │   └── 06_results.py        # Results visualization and export ✅
 │   └── utils/
 │       ├── session_state.py     # AppState dataclass (instance attributes) ✅
 │       ├── visualizations.py    # 10 Plotly chart utilities ✅

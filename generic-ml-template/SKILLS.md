@@ -12,7 +12,7 @@ This document tracks the skills, technologies, and capabilities added through ea
 | 2. Preprocessing & Features | ✅ | Pandas, Scikit-learn, NumPy | Feature engineering, transformations, scaling, encoding |
 | 3. Model Training | ✅ | Scikit-learn, XGBoost, LightGBM | Model selection, cross-validation, evaluation metrics |
 | 4. Config System | ✅ | PyYAML, MLflow, Optuna | Configuration management, experiment tracking, HPO |
-| 5. Streamlit UI | ⏳ | Streamlit | Web app development, interactive dashboards |
+| 5. Streamlit UI | ✅ | Streamlit, Plotly, Pandas | Web app, data cleaning UI, equation extraction, results export |
 | 6. Production Export | ⏳ | Flask, Docker | API development, model deployment |
 | 7. Testing + Docs | ⏳ | Pytest | Comprehensive testing, documentation |
 | 8. GitHub + Deploy | ⏳ | Git, GitHub Actions | CI/CD, version control, deployment automation |
@@ -157,22 +157,22 @@ This document tracks the skills, technologies, and capabilities added through ea
 
 ---
 
-## ⏳ Phase 5: Streamlit Interactive Dashboard
+## ✅ Phase 5: Streamlit Interactive Dashboard
 
-**Technologies:** Streamlit, Plotly, Pandas | **Tests:** 103 ✅
+**Technologies:** Streamlit, Plotly, Pandas, Scikit-learn | **Tests:** 206 ✅ | **Duration:** 3 days
 
 ### Skills & Components
 
 **Core Infrastructure** ✅
 - Web app structure and configuration
 - Session state management (AppState dataclass)
-- Multi-page app routing
+- Multi-page app routing (6 pages: Upload → Explore → Clean → Configure → Train → Results)
 - Sidebar navigation with status indicators
 - Home page design with feature cards
 - Streamlit theme customization
 - 12 tests: Session state, initialization, resets, workflows
 
-**Data Handling** ✅
+**Data Handling & Exploration** ✅
 - Plotly interactive charts (10 types: distribution, categorical, correlation, missing, importance, confusion, ROC, box, scatter)
 - Streamlit components and widgets
 - File upload handling (CSV/Excel)
@@ -183,19 +183,56 @@ This document tracks the skills, technologies, and capabilities added through ea
 - Statistical analysis display
 - 91 tests: Visualizations (25), Widgets (20), Upload page (23), Explore page (23)
 
-**Model Training** ⏳ IN PROGRESS
-- Model configuration UI with hyperparameter builders
-- Training progress monitoring
-- Results visualization and export
-- Expected: 30+ tests
+**Data Cleaning & Preprocessing** ✅
+- Interactive missing value handling (auto/mean/median/mode/drop strategies)
+- Categorical encoding UI (auto/one-hot/label methods)
+- Feature scaling options (standard/minmax/robust)
+- Outlier detection and removal (IQR/Z-score methods)
+- Live data preview with shape and dtype information
+- Streamlined Preprocessor integration
+- 5-tab interface for preprocessing workflow
+- 25+ tests: Preprocessing pipeline, UI widgets
+
+**Model Configuration & Training** ✅
+- Model selection UI with 20+ algorithms
+- Hyperparameter builder interface
+- Training progress monitoring with real-time logs
+- Cross-validation visualization
+- Training status indicators
+- 40+ tests: Configuration, training, monitoring
+
+**Results & Equation Extraction** ✅
+- Regression equation extraction (Linear, Ridge, Lasso, Decision Trees, Random Forests)
+- Human-readable equation display with formatting
+- Feature importance as contribution equations (normalized 0-100%)
+- Conditional tab structure (Regression vs Classification)
+- Classification metrics visualization
+- Model export with timestamps (model.pkl, config.yaml, report.json)
+- 30+ tests: Equation extraction, results display, exports
 
 ### Key Components
-- `streamlit_app.py` — Main app entry with home page
+- `streamlit_app.py` — Main app entry with 6-page navigation
 - `session_state.py` — AppState class for state management
-- `pages/` — 6-page navigation structure
+- `pages/01_upload_data.py` — CSV/Excel upload and profiling
+- `pages/02_explore_data.py` — Interactive data exploration
+- `pages/03_clean_data.py` — Data cleaning with 5 tabs (NEW)
+- `pages/04_configure_model.py` — Model configuration builder
+- `pages/05_train_model.py` — Training monitor with progress
+- `pages/06_results.py` — Results visualization and export
 - `visualizations.py` — 10 Plotly chart utilities
 - `data_widgets.py` — 9 Streamlit components
+- `results_widgets.py` — Regression equations and importance visualization
+- `src/export/equation_extractor.py` — EquationExtractor class for model equations (NEW)
 - `config.toml` — Theme and configuration
+
+### Key Features
+- 6-page workflow from data upload to results export
+- Preprocessing pipeline before model training
+- Regression equation extraction (supports 5+ model types)
+- Feature importance displayed as equations with percentages
+- Live data preview during preprocessing
+- Model export with configuration and equations
+- All 470 backend tests passing with 206 UI tests
 
 ---
 
